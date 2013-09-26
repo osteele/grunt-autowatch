@@ -52,9 +52,17 @@ module.exports = (grunt) ->
   ]
 
   getCompactFormatSourceFiles = (data) ->
-    illegalOptions = UnwatchableFileOptions.filter (option) -> option of data
+    illegalOptions = UnwatchableFileOptions.filter (option) -> data[option]
     if illegalOptions.length
-      grunt.log.error "Watch cannot proceess the #{illegalOptions.join(" ")} option#{"s".slice(illegalOptions.length == 1)}"
+      ser = (items) ->
+        butLast = items.slice()
+        last = butLast.pop()
+        return last unless butLast.length
+        # console.info [butLast.join(', '), last],(', and'.slice(butLast.length == 1))
+        [butLast.join(', '), last].join(', and '.slice(butLast.length == 1))
+      pl = (base, count) ->
+        "#{base}#{'s'.slice(count == 1)}"
+      grunt.log.error "Watch cannot proceess the #{ser illegalOptions} #{pl 'option', illegalOptions.length}"
       return []
 
     files = data.src
@@ -122,14 +130,22 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'autowatch', description, ->
     options = _.extend {run: true}, grunt.config([this.name, 'options']) or {}
-
     watchTaskName = 'watch'
+
+    # create new targets
+    for task in (options.tasks or [])
+      propertyPath = [watchTaskName, task]
+      data = grunt.config.getRaw(propertyPath) or {}
+      grunt.log.warn "#{propertyPath.join('.')} already has a \"tasks\" property" if data.tasks
+      data.tasks ?= [task]
+      grunt.config.set(propertyPath, data)
+
+    # fill in target properties
     for watchTargetName in _.keys(grunt.config.getRaw(watchTaskName)).filter(isValidMultiTaskTarget)
       propertyPath = [watchTaskName, watchTargetName]
       watchTargetData = grunt.config.get(propertyPath)
       addWatchTargetProperties watchTargetName, watchTargetData
       grunt.config.set propertyPath, watchTargetData
-    return false if this.errorCount > 0
 
-    grunt.task.run 'watch' if options.run
-    return true
+    grunt.task.run 'watch' if options.run and this.errorCount == 0
+    return this.errorCount == 0

@@ -2,7 +2,7 @@
 
 This plugin supplies default `task` and `files` to [watch](https://github.com/gruntjs/grunt-contrib-watch) targets that don't have them.
 If a watch target has no `task` property, it is given a task that matches its name.
-If a watch target has no `files` property, it is given the files from its tasks.
+If a watch target has no `files` property, it is given the files from the configurations for those of its tasks that are plugins.
 
 Together, these defaults allow one to write _e.g._
 
@@ -15,8 +15,21 @@ grunt.initConfig({
 })
 ```
 
-to create watchers that watch the sources to the `coffee` and `jade` tasks, and respectively invoke
-those tasks when their corresponding sources are changed.
+to do the equivalent of
+
+```js
+grunt.initConfig({
+  watch: {
+    coffee: {tasks: ['coffee'], files: 'app/**/*.coffee'}
+    jade: {tasks: ['jade'], files: 'app/**/*.jade'}
+  }
+})
+```
+
+where the actual values of the `files` property are copied from the configurations of their respective plugins,
+with `cwd` properties applied to the paths,
+and with the [various grunt formats for specifying files](http://gruntjs.com/configuring-tasks#files)
+normalized into a single list of file pattern strings so that `watch` can understand them.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
@@ -47,22 +60,33 @@ Default value: `true`
 
 If `true`, `grunt autowatch` runs the `watch` task after modifying the `watch` configuration.
 
+#### options.tasks
+Type: `Array`
+Default value: `[]`
+
+This is a list of `plugin` or `plugin:target` strings.
+`grunt autowatch` inserts watcher configurations for these tasks into the `watch` configuration.
+
 ### Usage Examples
 
-Fill the `task` and `files` properties:
+The following example contains stubs for `coffee` and `jade` watchers inside the `watch` configuration.
+`grunt autowatch` task sets the `watch.coffee.task` and `watch.jade.task` to `['coffee']` and `['jade']` respecively
+(based on name of the watcher),
+and sets `watch.coffee.files` and `watch.jade.files` to a list of file patterns based on the coffee and jade configurations.
 
 ```js
 grunt.initConfig({
-  coffee: { ... }
-  jade: { ... }
+  coffee: { ... },
+  jade: { ... },
   watch: {
-    coffee: {}
+    coffee: {},
     jade: {}
   }
 })
 ```
 
-Fill in the `files` property based on the `coffeelint:gruntfile` configuration:
+The following example defines a watcher with a configured list of tasks, but omit the `files` properties.
+`grunt autowatch` sets `watch.grunt.files` to a list of file patterns based on the `gruntfile` target of the `coffeelint` plugin configuration.
 
 ```js
 grunt.initConfig({
@@ -70,6 +94,32 @@ grunt.initConfig({
   watch: {
     grunt: {tasks: ['coffeelint:gruntfile']}
   }
+})
+```
+
+The following configuration omits watchers for `coffee` and `jade` entirely.
+`grunt autowatch` inserts watchers for these tasks into the `watch` configuration.
+
+```js
+grunt.initConfig({
+  coffee: { ... },
+  jade: { ... },
+  autowatch: {
+    options:
+      tasks: ['coffee', 'jade']
+  },
+})
+```
+
+The following autowatch configuration configures autowatch to *only* modify the `watch` *configuration* -- and *not* to run the `watch` *task* when it is done.
+With this option, `grunt autowatch watch` is necessary in order to run the watchers.
+
+```js
+grunt.initConfig({
+  autowatch: {
+    options:
+      run: false
+  },
 })
 ```
 

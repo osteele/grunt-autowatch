@@ -14,7 +14,7 @@ module.exports = (grunt) ->
     nodeunit:
       context1: 'test/**/*_test.coffee'
 
-    dummy:
+    testTask:
       fileString: 'test/files/string.txt'
       compactFiles:
         src: ['test/files/compact.txt']
@@ -38,31 +38,38 @@ module.exports = (grunt) ->
           {src: ['negative3.txt', '!exclude3', '!exclude4'], cwd: 'test/files'}
         ]
 
+    testTaskTwo:
+      target:
+        src: 'test/files/one.txt'
+      targetTwo:
+        src: 'test/files/two.txt'
+
     autowatch:
       options:
         run: false
+        tasks: ['testTaskTwo', 'testTaskTwo:targetTwo']
 
     watch:
-      dummy: {}
+      testTask: {}
       defined:
         tasks: ['defined']
         files: ['test/files/defined.txt']
       fileString:
-        tasks: ['dummy:fileString']
+        tasks: ['testTask:fileString']
       filesArray:
-        tasks: ['dummy:filesArray']
+        tasks: ['testTask:filesArray']
       fileObject:
-        tasks: ['dummy:fileObject']
+        tasks: ['testTask:fileObject']
       compactFiles:
-        tasks: ['dummy:compactFiles', 'dummy:compactFilesCwd']
+        tasks: ['testTask:compactFiles', 'testTask:compactFilesCwd']
       mergeNegativePatterns:
-        tasks: ['dummy:negative1', 'dummy:negative2']
+        tasks: ['testTask:negative1', 'testTask:negative2']
 
   grunt.loadTasks 'tasks'
 
   require('load-grunt-tasks')(grunt)
 
-  grunt.registerTask 'dummy', []
+  grunt.registerTask 'testTask', []
 
   grunt.registerTask 'test', ['autowatch', 'nodeunit']
   grunt.registerTask 'default', ['coffeelint', 'test']

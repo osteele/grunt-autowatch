@@ -2,7 +2,7 @@ grunt = require 'grunt'
 
 exports.autowatch =
   default_tasks: (test) ->
-    test.deepEqual grunt.config.get('watch.dummy.tasks'), ['dummy']
+    test.deepEqual grunt.config.get('watch.testTask.tasks'), ['testTask']
     test.done()
 
   dont_replace_tasks: (test) ->
@@ -43,8 +43,7 @@ exports.autowatch =
     test.done()
 
   combine_targets: (test) ->
-    test.deepEqual grunt.config.get('watch.dummy.tasks'), ['dummy']
-    test.deepEqual grunt.config.get('watch.dummy.files').sort(),
+    test.deepEqual grunt.config.get('watch.testTask.files').sort(),
       [
        'test/files/array1.txt',
        'test/files/array2.txt',
@@ -59,3 +58,13 @@ exports.autowatch =
       ]
     test.done()
 
+  create_task: (test) ->
+    test.deepEqual grunt.config.get('watch.testTaskTwo.tasks'), ['testTaskTwo']
+    test.deepEqual grunt.config.get('watch.testTaskTwo.files').sort(),
+      ['test/files/one.txt', 'test/files/two.txt']
+    test.done()
+
+  create_task_with_target: (test) ->
+    test.deepEqual grunt.config.get('watch.testTaskTwo:targetTwo.tasks'), ['testTaskTwo:targetTwo']
+    test.deepEqual grunt.config.get('watch.testTaskTwo:targetTwo.files'), ['test/files/two.txt']
+    test.done()
