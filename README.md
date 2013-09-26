@@ -1,15 +1,20 @@
 # grunt-autowatch
 
-This plugin supplies default `task` and `files` to [watch](https://github.com/gruntjs/grunt-contrib-watch) targets that don't have them.
-If a watch target has no `task` property, it is given a task that matches its name.
-If a watch target has no `files` property, it is given the files from the configurations for those of its tasks that are plugins.
+This plugin supplies default `tasks` and `files` to [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch) listeners that don't have them.
+
+If a watch listener has no `tasks` property, it is given a task that matches its name.
+For example, a watcher named `jade` will receive a `tasks` of `['jade']`.
+
+If a watch listener has no `files` property, it is given the files from the configurations for those of its tasks that are plugins.
+For example, a watcher whose `tasks` are equal to `['jade']` will receive a `files` list that is constructed
+from the `jade` plugin configuration, transfomed into a format that `grunt-contrib-watch` can understand.
 
 Together, these defaults allow one to write _e.g._
 
 ```js
 grunt.initConfig({
   watch: {
-    coffee: {}
+    coffee: {},
     jade: {}
   }
 })
@@ -20,7 +25,7 @@ to do the equivalent of
 ```js
 grunt.initConfig({
   watch: {
-    coffee: {tasks: ['coffee'], files: 'app/**/*.coffee'}
+    coffee: {tasks: ['coffee'], files: 'app/**/*.coffee'},
     jade: {tasks: ['jade'], files: 'app/**/*.jade'}
   }
 })
@@ -128,4 +133,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
-* September 24, 20012 -- initial release
+* September 26, 20012 -- initial release

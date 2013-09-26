@@ -1,6 +1,6 @@
 {
   "name": "grunt-autowatch",
-  "description": "Supply default `task` and `files` to empty `watch` targets.",
+  "description": "Automatically fill in grunt-contrib-watch configuration 'task' and 'files' properties.",
   "version": "0.1.0",
   "homepage": "https://github.com/osteele/grunt-autowatch",
   "author": {
