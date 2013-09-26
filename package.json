@@ -1,7 +1,7 @@
 {
   "name": "grunt-autowatch",
   "description": "Supply default `task` and `files` to empty `watch` targets.",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "https://github.com/osteele/grunt-autowatch",
   "author": {
     "name": "Oliver Steele",
