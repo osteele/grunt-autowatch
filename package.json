@@ -1,0 +1,48 @@
+{
+  "name": "grunt-autowatch",
+  "description": "Supply default `task` and `files` to empty `watch` targets.",
+  "version": "0.0.0",
+  "homepage": "https://github.com/osteele/grunt-autowatch",
+  "author": {
+    "name": "Oliver Steele",
+    "email": "steele@osteele.com",
+    "url": "http://osteele.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/osteele/grunt-autowatch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/osteele/grunt-autowatch/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/osteele/grunt-autowatch/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "coffee-script": ">= 1.6.0",
+    "grunt-contrib-watch": "~0.5.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-coffeelint": "0.0.7",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "load-grunt-tasks": "~0.1.0",
+    "grunt-release": "~0.5.1"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.1"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
