@@ -9,7 +9,6 @@ path = require 'path'
 
 module.exports = (grunt) ->
   _ = grunt.util._
-  path = require 'path'
   description = grunt.file.readJSON(path.join(path.dirname(module.filename), '../package.json')).description
 
   # from lib/grunt/task.js
@@ -119,33 +118,41 @@ module.exports = (grunt) ->
       .flatten(true)
       .value()
 
-  getWatchTargetFileList = (watchTargetName, data) ->
+  getWatchTargetFileList = (target, data) ->
     fileLists = _.flatten((getTaskFileLists(task) for task in data.tasks), true)
-    grunt.log.warn "The tasks in watch.#{watchTargetName}.tasks do not specify any files" unless fileLists.length
+    grunt.log.warn "The tasks in watch.#{target}.tasks do not specify any files" unless fileLists.length
     return combineFileLists(fileLists)
 
-  addWatchTargetProperties = (watchTargetName, watchTargetData) ->
-    watchTargetData.tasks ?= [watchTargetName]
-    watchTargetData.files ?= getWatchTargetFileList(watchTargetName, watchTargetData)
+  addDefaultWatchTargetProperties = (target, cfg) ->
+    cfg.tasks ?= [target]
+    cfg.files ?= getWatchTargetFileList(target, cfg)
 
-  grunt.registerTask 'autowatch', description, ->
-    options = _.extend {run: true}, grunt.config([this.name, 'options']) or {}
+  apply = (options) ->
     watchTaskName = 'watch'
 
     # create new targets
     for task in (options.tasks or [])
-      propertyPath = [watchTaskName, task]
-      data = grunt.config.getRaw(propertyPath) or {}
-      grunt.log.warn "#{propertyPath.join('.')} already has a \"tasks\" property" if data.tasks
-      data.tasks ?= [task]
-      grunt.config.set(propertyPath, data)
+      cfgPath = [watchTaskName, task]
+      cfg = grunt.config.getRaw(cfgPath) or {}
+      grunt.log.warn "#{cfgPath.join('.')} already has a \"tasks\" property" if cfg.tasks
+      cfg.tasks ?= [task]
+      grunt.config.set cfgPath, cfg
 
     # fill in target properties
-    for watchTargetName in _.keys(grunt.config.getRaw(watchTaskName)).filter(isValidMultiTaskTarget)
-      propertyPath = [watchTaskName, watchTargetName]
-      watchTargetData = grunt.config.get(propertyPath)
-      addWatchTargetProperties watchTargetName, watchTargetData
-      grunt.config.set propertyPath, watchTargetData
+    for target in _.keys(grunt.config.getRaw(watchTaskName)).filter(isValidMultiTaskTarget)
+      cfgPath = [watchTaskName, target]
+      cfg = grunt.config.get(cfgPath)
+      addDefaultWatchTargetProperties target, cfg
+      grunt.config.set cfgPath, cfg
 
+  grunt.registerTask 'autowatch', description, ->
+    options = _.extend {run: true}, grunt.config([this.name, 'options']) or {}
+
+    # This appears to be the only way to get watch's taskrunner to see the modified options on reload
+    grunt.util.hooker.hook grunt.task, 'run', (task) ->
+      apply options if task == 'watch'
+
+    # Given the previous hook, the following call is redundant.
+    apply options
     grunt.task.run 'watch' if options.run and this.errorCount == 0
     return this.errorCount == 0
