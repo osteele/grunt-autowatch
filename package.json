@@ -37,7 +37,9 @@
     "grunt-coffeelint": "0.0.7",
     "grunt-contrib-nodeunit": "~0.2.0",
     "load-grunt-tasks": "~0.1.0",
-    "grunt-release": "~0.5.1"
+    "grunt-release": "~0.5.1",
+    "grunt-cli": "~0.1.13",
+    "shelljs": "~0.2.6"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"
