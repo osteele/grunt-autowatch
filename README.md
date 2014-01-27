@@ -1,5 +1,9 @@
 # grunt-autowatch
 
+[![NPM version](https://badge.fury.io/js/grunt-autowatch.png)](http://badge.fury.io/js/grunt-autowatch)
+[![Build Status](https://api.travis-ci.org/osteele/grunt-autowatch.png?branch-master)](https://api.travis-ci.org/osteele/grunt-autowatch.png?branch-master)
+[![Build Status](https://david-dm.org/osteele/grunt-autowatch.png)](https://david-dm.org/osteele/grunt-autowatch.png)
+
 This plugin supplies default `tasks` and `files` to [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch) listeners that don't have them.
 
 If a watch listener has no `tasks` property, it is given a task that matches its name.
