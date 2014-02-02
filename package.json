@@ -1,7 +1,7 @@
 {
   "name": "grunt-autowatch",
   "description": "Automatically fill in grunt-contrib-watch configuration 'task' and 'files' properties.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/osteele/grunt-autowatch",
   "author": {
     "name": "Oliver Steele",
@@ -31,8 +31,7 @@
     "clean": "rm -f tasks/*.{js,map}",
     "test": "npm run build && grunt test"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "coffee-script": ">=1.7.1",
     "grunt": "~0.4.2",
