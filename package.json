@@ -35,7 +35,7 @@
     "grunt-contrib-watch": "~0.5.3"
   },
   "devDependencies": {
-    "coffee-script": ">=1.6.3",
+    "coffee-script": ">=1.7.1",
     "grunt": "~0.4.2",
     "grunt-coffeelint": "0.0.8",
     "grunt-contrib-nodeunit": "~0.3.0",
