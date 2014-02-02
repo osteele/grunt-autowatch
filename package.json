@@ -32,7 +32,6 @@
     "test": "npm run build && grunt test"
   },
   "dependencies": {
-    "grunt-contrib-watch": "~0.5.3"
   },
   "devDependencies": {
     "coffee-script": ">=1.7.1",
@@ -45,7 +44,8 @@
     "shelljs": "~0.2.6"
   },
   "peerDependencies": {
-    "grunt": "~0.4.2"
+    "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3"
   },
   "keywords": [
     "gruntplugin"
