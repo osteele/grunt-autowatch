@@ -114,8 +114,9 @@ grunt.initConfig({
   coffee: { ... },
   jade: { ... },
   autowatch: {
-    options:
+    options: {
       tasks: ['coffee', 'jade']
+    }
   },
 })
 ```
@@ -126,8 +127,9 @@ With this option, `grunt autowatch watch` is necessary in order to run the watch
 ```js
 grunt.initConfig({
   autowatch: {
-    options:
+    options: {
       run: false
+    }
   },
 })
 ```
