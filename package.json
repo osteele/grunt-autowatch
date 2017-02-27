@@ -43,7 +43,7 @@
     "shelljs": "~0.2.6"
   },
   "peerDependencies": {
-    "grunt": "~0.4.2",
+    "grunt": ">=0.4.0",
     "grunt-contrib-watch": "~0.5.3"
   },
   "keywords": [
